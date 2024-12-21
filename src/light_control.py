@@ -1,13 +1,12 @@
-import requests
-import json
-from datetime import datetime
+import RPi.GPIO as GPIO
 from rpi_ws281x import *
 import argparse
 import schedule
-import numpy as np
-import pytweening
-import time
+import requests
+import json
+from datetime import datetime
 from dataclasses import dataclass
+import time
 from color import init_color_steps
 from wled_api import send_wled_preset_request
 
@@ -84,12 +83,29 @@ def update_sun_times():
     print("Sun times updated.")
     initialize_all()  # Reinitialize with new times
 
+def init_phases():
+    """Initialize day phases with times from JSON."""
+    with open('./times.json', 'r') as f:
+        sun_times = json.load(f)
+    for k in sun_times.keys():
+        phase = next((phase for phase in day_phases if phase.name == k), None)
+        if phase:
+            phase.time = sun_times[k]
+
+    next_index = 1
+    for i in range(len(day_phases)):
+        next_time = datetime.strptime(day_phases[next_index].time, '%I:%M:%S %p')
+        time_diff = next_time - datetime.strptime(day_phases[i].time, '%I:%M:%S %p')
+        day_phases[i].steps = round(time_diff.total_seconds() / 60)
+        next_index += 1
+        next_index = 0 if next_index >= len(day_phases) else next_index
+
 def initialize_all():
     """Initialize phases, schedules, and color steps."""
     global color_steps
     print("Initializing phases, schedules, and color steps...")
 
-    # Fetch and save sun times if the file doesn't exist
+    # Fetch and save sun times if needed
     try:
         with open('./times.json', 'r') as f:
             json.load(f)
@@ -111,4 +127,78 @@ def initialize_all():
     # Initialize color steps for NeoPixel
     color_steps = init_color_steps(day_phases)
 
-# Remaining code (NeoPixel updates, GPIO handling, etc.) stays the same
+def init_relays():
+    """Initialize GPIO pins for relay control."""
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(PIN_RELAY_1, GPIO.OUT)
+    GPIO.setup(PIN_RELAY_2, GPIO.OUT)
+    GPIO.setup(PIN_RELAY_3, GPIO.OUT)
+    GPIO.setup(PIN_RELAY_4, GPIO.OUT)
+    GPIO.output(PIN_RELAY_1, GPIO.LOW)
+    GPIO.output(PIN_RELAY_2, GPIO.LOW)
+    GPIO.output(PIN_RELAY_3, GPIO.LOW)
+    GPIO.output(PIN_RELAY_4, GPIO.LOW)
+
+def toggle_relays(state):
+    """Toggle the relays based on the `state`."""
+    gpio_state = GPIO.HIGH if state else GPIO.LOW
+    GPIO.output(PIN_RELAY_1, gpio_state)
+    GPIO.output(PIN_RELAY_2, gpio_state)
+    GPIO.output(PIN_RELAY_3, gpio_state)
+    GPIO.output(PIN_RELAY_4, gpio_state)
+    print(f"Relays turned {'ON' if state else 'OFF'}.")
+
+def handle_phase_execution(phase):
+    """Handle execution of a specific phase."""
+    global final_phase_executed
+    send_wled_preset_request(preset_number=phase.preset)
+    toggle_relays(phase.lamps_on)
+    if phase.name == "midnight2":
+        print("Final phase executed. Preparing to reinitialize...")
+        final_phase_executed = True
+
+def current_minutes():
+    """Return the current time in minutes since midnight."""
+    now = datetime.now()
+    return now.hour * 60 + now.minute
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c', '--clear', action='store_true', help='Clear the display on exit')
+    args = parser.parse_args()
+
+    init_relays()
+
+    strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
+    strip.begin()
+
+    print("Press Ctrl-C to quit.")
+    if not args.clear:
+        print('Use "-c" argument to clear LEDs on exit.')
+
+    initialize_all()
+
+    start_index = current_minutes()
+    try:
+        while True:
+            for i in range(strip.numPixels()):
+                try:
+                    strip.setPixelColor(i, color_steps[start_index + i])
+                except IndexError:
+                    start_index = 0
+            strip.show()
+            start_index += 1
+
+            schedule.run_pending()
+
+            if final_phase_executed:
+                final_phase_executed = False
+                initialize_all()
+
+            time.sleep(15)
+    except KeyboardInterrupt:
+        if args.clear:
+            for i in range(strip.numPixels()):
+                strip.setPixelColor(i, Color(0, 0, 0))
+            strip.show()
+        GPIO.cleanup()
