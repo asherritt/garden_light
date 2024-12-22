@@ -1,6 +1,6 @@
 import requests
 import schedule
-from datetime import datetime
+from datetime import datetime, timedelta
 
 WLED_IP = "192.168.1.169"
 
@@ -10,7 +10,7 @@ def set_closest_day_phase_preset(day_phases):
     """Set the WLED preset for the closest day phase to the current time."""
     now = datetime.now()
     closest_phase = None
-    smallest_diff = timedelta.max
+    smallest_diff = timedelta(days=999999999)  # Effectively a very large timedelta
 
     for phase in day_phases:
         phase_time = datetime.strptime(phase.time, '%H:%M:%S').replace(
