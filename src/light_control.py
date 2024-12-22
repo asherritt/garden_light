@@ -4,7 +4,7 @@ import argparse
 import schedule
 import requests
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from dataclasses import dataclass
 import time
 from color import init_color_steps
@@ -83,6 +83,25 @@ def update_sun_times():
     sun_times = fetch_sun_times()
     save_to_json(sun_times)
     print("Sun times json updated.")
+    
+def minutes_between_times(time1, time2):
+    """
+    Calculate the positive difference in minutes between two times,
+    accounting for crossing midnight.
+    :param time1: First time as a string in 'HH:MM:SS' format.
+    :param time2: Second time as a string in 'HH:MM:SS' format.
+    :return: Difference in minutes as a positive integer.
+    """
+    fmt = '%H:%M:%S'
+    t1 = datetime.strptime(time1, fmt)
+    t2 = datetime.strptime(time2, fmt)
+
+    # If t2 is earlier than t1, assume t2 is on the next day
+    if t2 < t1:
+        t2 += timedelta(days=1)
+
+    delta = t2 - t1
+    return int(delta.total_seconds() / 60)
 
 def init_phases():
     """Initialize day phases with times from JSON."""
@@ -95,10 +114,8 @@ def init_phases():
 
     next_index = 1
     for i in range(len(day_phases)):
-        next_time = datetime.strptime(day_phases[next_index].time, '%H:%M:%S')
-        time_diff = next_time - datetime.strptime(day_phases[i].time, '%H:%M:%S')
         # steps are total difference in seconds from one phase time to the next
-        day_phases[i].steps = round(time_diff.total_seconds() / 60)
+        day_phases[i].steps = minutes_between_times(day_phases[i].time, day_phases[next_index].time)
         next_index += 1
         next_index = 0 if next_index >= len(day_phases) else next_index
      

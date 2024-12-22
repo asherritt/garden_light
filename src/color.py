@@ -26,8 +26,5 @@ def init_color_steps(day_phases):
         print(f'name: {d.name} time: {d.time} steps: {d.steps}')
         if next_index > len(day_phases) -1:
             next_index = 0
-
-    print("color_steps")
-    print(color_steps)
          
     return color_steps
