@@ -9,6 +9,7 @@ from dataclasses import dataclass
 import time
 from color import init_color_steps
 from wled_api import init_wled
+import globals
 
 # LED strip configuration
 LED_COUNT = 144
@@ -39,7 +40,7 @@ class DayPhase:
     lamps_on: bool
 
 day_phases = [
-    DayPhase(name='midnight', color=(0, 8, 0, 0), time='12:00:00 AM', steps=0, preset=1, lamps_on=True),
+    DayPhase(name='midnight', color=(0, 40, 0, 20), time='00:00:00', steps=0, preset=1, lamps_on=True),
     DayPhase(name='first_light', color=(0, 30, 0, 8), time=None, steps=0, preset=2, lamps_on=False),
     DayPhase(name='dawn', color=(90, 0, 15, 30), time=None, steps=0, preset=3, lamps_on=False),
     DayPhase(name='sunrise', color=(120, 0, 25, 45), time=None, steps=0, preset=4, lamps_on=False),
@@ -48,13 +49,13 @@ day_phases = [
     DayPhase(name='sunset', color=(200, 0, 10, 125), time=None, steps=0, preset=7, lamps_on=False),
     DayPhase(name='dusk', color=(15, 40, 20, 10), time=None, steps=0, preset=8, lamps_on=True),
     DayPhase(name='last_light', color=(0, 10, 0, 0), time=None, steps=0, preset=9, lamps_on=True),
-    DayPhase(name='midnight2', color=(0, 8, 0, 0), time='11:59:59 PM', steps=0, preset=1, lamps_on=True),
+    DayPhase(name='midnight2', color=(0, 40, 0, 20), time='23:50:00', steps=0, preset=1, lamps_on=True),
 ]
 
 def fetch_sun_times():
     """Fetch sun times from the API."""
     print("Fetching sun times...")
-    url = f"https://api.sunrisesunset.io/json?lat={LAT}&lng={LNG}&formatted=0"
+    url = f"https://api.sunrisesunset.io/json?lat={LAT}&lng={LNG}&time_format=24"
     response = requests.get(url)
     data = response.json()
     print(data)
@@ -73,7 +74,7 @@ def fetch_sun_times():
 def save_to_json(data):
     """Save sun times to a JSON file."""
     print("Saving sun times...")
-    with open('./times.json', 'w') as f:
+    with open('times.json', 'w') as f:
         json.dump(data, f)
 
 def update_sun_times():
@@ -85,7 +86,7 @@ def update_sun_times():
 
 def init_phases():
     """Initialize day phases with times from JSON."""
-    with open('./times.json', 'r') as f:
+    with open('times.json', 'r') as f:
         sun_times = json.load(f)
     for k in sun_times.keys():
         phase = next((phase for phase in day_phases if phase.name == k), None)
@@ -94,8 +95,8 @@ def init_phases():
 
     next_index = 1
     for i in range(len(day_phases)):
-        next_time = datetime.strptime(day_phases[next_index].time, '%I:%M:%S %p')
-        time_diff = next_time - datetime.strptime(day_phases[i].time, '%I:%M:%S %p')
+        next_time = datetime.strptime(day_phases[next_index].time, '%H:%M:%S')
+        time_diff = next_time - datetime.strptime(day_phases[i].time, '%H:%M:%S')
         # steps are total difference in seconds from one phase time to the next
         day_phases[i].steps = round(time_diff.total_seconds() / 60)
         next_index += 1
@@ -182,8 +183,8 @@ if __name__ == '__main__':
 
             schedule.run_pending()
 
-            if final_phase_executed:
-                final_phase_executed = False
+            if globals.final_phase_executed:
+                globals.final_phase_executed = False
                 initialize_all()
 
             time.sleep(15)
