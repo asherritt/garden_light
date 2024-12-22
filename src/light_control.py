@@ -124,8 +124,9 @@ def initialize_all():
 
     # Schedule WLED requests for each phase
     for phase in day_phases:
-        print(f"schedule for {phase.time}")
-        schedule.every().day.at(phase.time).do(handle_phase_execution, phase=phase)
+        schedule_time = datetime.strptime(phase.time, '%I:%M:%S %p').strftime('%H:%M:%S')
+        print(f"schedule for {schedule_time}")
+        schedule.every().day.at(schedule_time).do(handle_phase_execution, phase=phase)
 
     # Schedule periodic sun times update
     # schedule.every().day.at("10:30").do(update_sun_times)
