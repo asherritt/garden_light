@@ -98,6 +98,7 @@ def init_phases():
     for i in range(len(day_phases)):
         next_time = datetime.strptime(day_phases[next_index].time, '%I:%M:%S %p')
         time_diff = next_time - datetime.strptime(day_phases[i].time, '%I:%M:%S %p')
+        # steps are total difference in seconds from one phase time to the next
         day_phases[i].steps = round(time_diff.total_seconds() / 60)
         next_index += 1
         next_index = 0 if next_index >= len(day_phases) else next_index
