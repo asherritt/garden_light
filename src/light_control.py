@@ -55,9 +55,11 @@ day_phases = [
 
 def fetch_sun_times():
     """Fetch sun times from the API."""
+    print("Fetching sun times...")
     url = f"https://api.sunrisesunset.io/json?lat={LAT}&lng={LNG}&formatted=0"
     response = requests.get(url)
     data = response.json()
+    print(data)
     return {
         "first_light": data['results']['first_light'],
         "dawn": data['results']['dawn'],
@@ -72,6 +74,7 @@ def fetch_sun_times():
 
 def save_to_json(data):
     """Save sun times to a JSON file."""
+    print("Saving sun times...")
     with open('./times.json', 'w') as f:
         json.dump(data, f)
 
@@ -80,8 +83,7 @@ def update_sun_times():
     print("Fetching new sun times...")
     sun_times = fetch_sun_times()
     save_to_json(sun_times)
-    print("Sun times updated.")
-    initialize_all()  # Reinitialize with new times
+    print("Sun times json updated.")
 
 def init_phases():
     """Initialize day phases with times from JSON."""
@@ -99,18 +101,22 @@ def init_phases():
         day_phases[i].steps = round(time_diff.total_seconds() / 60)
         next_index += 1
         next_index = 0 if next_index >= len(day_phases) else next_index
+     
+    print("day_phases created")
+    print(day_phases)
 
 def initialize_all():
     """Initialize phases, schedules, and color steps."""
     global color_steps
     print("Initializing phases, schedules, and color steps...")
 
+    update_sun_times()
     # Fetch and save sun times if needed
     try:
         with open('./times.json', 'r') as f:
             json.load(f)
     except FileNotFoundError:
-        update_sun_times()
+         print("times.json file is missing!")
 
     # Initialize day phases
     init_phases()
@@ -118,11 +124,11 @@ def initialize_all():
 
     # Schedule WLED requests for each phase
     for phase in day_phases:
-        if phase.time:
-            schedule.every().day.at("10:30").do(handle_phase_execution, phase=phase)
+        print(f"schedule for {phase.time}")
+        schedule.every().day.at(phase.time).do(handle_phase_execution, phase=phase)
 
     # Schedule periodic sun times update
-    schedule.every().day.at("10:30").do(update_sun_times)
+    # schedule.every().day.at("10:30").do(update_sun_times)
 
     # Initialize color steps for NeoPixel
     color_steps = init_color_steps(day_phases)
