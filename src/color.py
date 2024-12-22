@@ -1,3 +1,7 @@
+from rpi_ws281x import Color
+import pytweening
+
+
 def interpolate_colors(start_color, end_color, steps):
     # Unpack the start and end colors
     r1, b1, g1, w1 = start_color
@@ -18,7 +22,7 @@ def init_color_steps(day_phases):
         next_color = day_phases[next_index].color
         color_steps.extend(interpolate_colors(d.color, next_color, d.steps))
         next_index += 1
-        # print(f'name: {d.name} time: {d.time} steps: {d.steps}')
+        print(f'name: {d.name} time: {d.time} steps: {d.steps}')
         if next_index > len(day_phases) -1:
             next_index = 0
             

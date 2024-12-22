@@ -119,10 +119,10 @@ def initialize_all():
     # Schedule WLED requests for each phase
     for phase in day_phases:
         if phase.time:
-            schedule.every().day.at(phase.time).do(handle_phase_execution, phase=phase)
+            schedule.every().day.at("10:30").do(handle_phase_execution, phase=phase)
 
     # Schedule periodic sun times update
-    schedule.every().day.at("12:00:00 AM").do(update_sun_times)
+    schedule.every().day.at("10:30").do(update_sun_times)
 
     # Initialize color steps for NeoPixel
     color_steps = init_color_steps(day_phases)
