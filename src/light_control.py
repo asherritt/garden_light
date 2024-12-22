@@ -8,7 +8,7 @@ from datetime import datetime
 from dataclasses import dataclass
 import time
 from color import init_color_steps
-from wled_api import send_wled_preset_request
+from wled_api import init_wled
 
 # LED strip configuration
 LED_COUNT = 144
@@ -28,8 +28,6 @@ PIN_RELAY_4 = 21
 
 # Location for sun times API
 LAT, LNG = 34.0900, -118.036873
-
-final_phase_executed = False
 
 @dataclass
 class DayPhase:
@@ -106,6 +104,8 @@ def init_phases():
     print("day_phases created")
     print(day_phases)
 
+
+
 def initialize_all():
     """Initialize phases, schedules, and color steps."""
     global color_steps
@@ -121,17 +121,7 @@ def initialize_all():
 
     # Initialize day phases
     init_phases()
-    schedule.clear()
-
-    # Schedule WLED requests for each phase
-    for phase in day_phases:
-        schedule_time = datetime.strptime(phase.time, '%I:%M:%S %p').strftime('%H:%M:%S')
-        print(f"schedule for {schedule_time}")
-        schedule.every().day.at(schedule_time).do(handle_phase_execution, phase=phase)
-
-    # Schedule periodic sun times update
-    # schedule.every().day.at("10:30").do(update_sun_times)
-
+    init_wled(day_phases)
     # Initialize color steps for NeoPixel
     color_steps = init_color_steps(day_phases)
 
@@ -156,14 +146,7 @@ def toggle_relays(state):
     GPIO.output(PIN_RELAY_4, gpio_state)
     print(f"Relays turned {'ON' if state else 'OFF'}.")
 
-def handle_phase_execution(phase):
-    """Handle execution of a specific phase."""
-    global final_phase_executed
-    send_wled_preset_request(preset_number=phase.preset)
-    toggle_relays(phase.lamps_on)
-    if phase.name == "midnight2":
-        print("Final phase executed. Preparing to reinitialize...")
-        final_phase_executed = True
+
 
 def current_minutes():
     """Return the current time in minutes since midnight."""
