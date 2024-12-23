@@ -1,26 +1,21 @@
 from garden_fill_light import *
-from sunrisesunset_api import init_wled
+from sunrisesunset_api import fetch_sun_times 
 
 def init():
 
-    # 1. API load sunrise io data
+    
     # 2. Update day phases
     # 3. Calculate steps
     # 4. Interpolate colors for each step and put in list
     # 5. Start sequence
     # 6. Reinvoke init once all done
 
-     """Initialize phases, schedules, and color steps."""
-    global color_steps
-    print("Initializing phases, schedules, and color steps...")
+    #  """Initialize phases, schedules, and color steps."""
+    # global color_steps
+    # print("Initializing phases, schedules, and color steps...")
 
-    update_sun_times()
-    # Fetch and save sun times if needed
-    try:
-        with open('./times.json', 'r') as f:
-            json.load(f)
-    except FileNotFoundError:
-         print("times.json file is missing!")
+    # 1. API load sunrise io data
+    sun_times = fetch_sun_times()
 
     # Initialize day phases
     init_phases()
