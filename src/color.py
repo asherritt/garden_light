@@ -167,18 +167,19 @@ def get_steps(phases):
             cyc_colors_interpolated = []
             for index in range(len(cyc_colors)):
                 cyc_colors_interpolated.append((_interpolate_rgb_colors(cyc_colors[index].to_tuple(), next_cyc_colors[index].to_tuple(), phase.total_minutes)))
-                
-            print(f"phase: {phase}")
-            print(f"fill_colors_interpolated: {len(fill_colors_interpolated)}")
-            print(f"cyc_colors_interpolated: {len(cyc_colors_interpolated[0])}")
-                
+
+            for m in range(phase.total_minutes):
+                 steps.append(Step(time=phase.add_minutes(m), lamps_on=phase.lamps_on, fill_light=fill_colors_interpolated[m], cyc=cyc_colors_interpolated[m]))
+         
             # Wrap next index back to 0
             if next_index > len(phases) -1:
                 next_index = 0
                 
- 
+    
+    print(f"steps: {cyc_colors_interpolated}")
             # color_steps.extend(_interpolate_colors(d.color, next_color, d.steps))
             # next_index += 1
             # print(f'name: {d.name} time: {d.time} steps: {d.steps}')
             # if next_index > len(day_phases) -1:
             #     next_index = 0
+    return steps
