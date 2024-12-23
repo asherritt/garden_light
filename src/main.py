@@ -36,7 +36,7 @@ def init():
         _process_step(current_step)
         # Wait for one minute before processing the next step, if there are more steps
         if steps:
-            print("Waiting for the next step...")
+            print(f"current_step.time {current_step.time}")
             time.sleep(60) 
     init()
 
@@ -56,28 +56,3 @@ if __name__ == '__main__':
         print('Use "-c" argument to clear LEDs on exit.')
 
     init()
-
-    # start_index = current_minutes()
-    # try:
-    #     while True:
-    #         for i in range(strip.numPixels()):
-    #             try:
-    #                 strip.setPixelColor(i, color_steps[start_index + i])
-    #             except IndexError:
-    #                 start_index = 0
-    #         strip.show()
-    #         start_index += 1
-
-    #         schedule.run_pending()
-
-    #         if globals.final_phase_executed:
-    #             globals.final_phase_executed = False
-    #             initialize_all()
-
-    #         time.sleep(15)
-    # except KeyboardInterrupt:
-    #     if args.clear:
-    #         for i in range(strip.numPixels()):
-    #             strip.setPixelColor(i, Color(0, 0, 0))
-    #         strip.show()
-    #     GPIO.cleanup()
