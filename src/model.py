@@ -43,7 +43,7 @@ class PhaseColor(BaseModel):
 class Step(BaseModel):
     time: str
     lamps_on: bool = False
-    fill_light: Color
+    fill_light: Any
     cyc: List[SegColor3] = Field(..., description="An array of 5 SegmentColor3 models")
 
     @validator("cyc")
