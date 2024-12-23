@@ -140,15 +140,15 @@ def _interpolate_rgbw_colors(start_color, end_color, steps):
 
 def _interpolate_rgb_colors(start_color, end_color, steps):
     # Unpack the start and end colors
-    r1, b1, g1 = start_color
-    r2, b2, g2 = end_color
+    r1, g1, b1 = start_color
+    r2, g2, b2 = end_color
     # Generate interpolated values for each color component
     r_values = [round(pytweening.easeInOutCubic(i / (steps - 1)) * (r2 - r1) + r1) for i in range(steps)]
     g_values = [round(pytweening.easeInOutCubic(i / (steps - 1)) * (g2 - g1) + g1) for i in range(steps)]
     b_values = [round(pytweening.easeInOutCubic(i / (steps - 1)) * (b2 - b1) + b1) for i in range(steps)]
-    # Create color objects for each step
-    color_objects = [Color(int(r), int(b), int(g)) for r, b, g in zip(r_values, b_values, g_values)]
-    return color_objects
+    # Combine the interpolated values into tuples
+    color_tuples = [(r, g, b) for r, g, b in zip(r_values, g_values, b_values)]
+    return color_tuples
 
 
 def get_steps(phases):

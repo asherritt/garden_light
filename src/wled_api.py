@@ -74,8 +74,8 @@ def _send_wled_set_request(cyc_rgb_colors):
 def set_cyc_light(cyc_color_rgb_int_segments):
     cyc_rbg_colors = []
     for cyc_color in cyc_color_rgb_int_segments:
-        converted_cyc_colors = convert_rgb_int_to_rgb(cyc_color)
-        print(f"converted_cyc_colors: {converted_cyc_colors}")
-        cyc_rbg_colors.append(converted_cyc_colors)
+        # converted_cyc_colors = convert_rgb_int_to_rgb(cyc_color)
+        print(f"converted_cyc_colors: {cyc_color}")
+        cyc_rbg_colors.append(cyc_color)
 
     _send_wled_set_request(cyc_rbg_colors)
