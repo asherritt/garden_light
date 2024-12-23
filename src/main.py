@@ -5,6 +5,7 @@ from typing import List
 from garden_fill_light import *
 from model import Step
 from sunrisesunset_api import get_phases 
+from wled_api import set_cyc_light
 from color import get_steps
 
 def _get_steps_after_now(steps: List[Step]) -> List[Step]:
@@ -23,6 +24,7 @@ def _get_steps_after_now(steps: List[Step]) -> List[Step]:
 def _process_step(step):
     print(f"Processing step {step}")
     set_light(step.fill_light)
+    wled_api(step.cyc)
     # 2. send wled request
     # 3. Check relays
 
