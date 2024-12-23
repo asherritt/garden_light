@@ -9,12 +9,15 @@ from color import get_steps
 def _get_steps_up_to_now(steps: List[Step]) -> List[Step]:
     """Slice the list of steps up to the current time."""
     # Get the current time
-    current_time = datetime.now().strftime("%H:%M:%S")
+    current_time = datetime.now().time()
+    
+    print(f"current_time: {current_time}")
 
     # Filter steps that are less than or equal to the current time
     steps_up_to_now = [
-        step for step in steps
-        if datetime.strptime(step.time, "%H:%M:%S") >= current_time
+        step
+        for step in steps
+        if datetime.strptime(step.time, "%H:%M:%S").time() >= current_time
     ]
     
     return steps_up_to_now
