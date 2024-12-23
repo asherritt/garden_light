@@ -53,7 +53,7 @@ def _generate_phases(sun_times: dict) -> List[Phase]:
     """
     Generate a list of Phase models from sun_times.
     :param sun_times: Dictionary of phase names and their corresponding times.
-    :return: List of Phase models with calculated seconds between phases.
+    :return: List of Phase models with calculated minutes between phases.
     """
     # Convert sun_times into a list of Phase models
     phases = []
@@ -61,13 +61,13 @@ def _generate_phases(sun_times: dict) -> List[Phase]:
     
     for i, key in enumerate(keys):
         time = sun_times[key]
-        # Calculate seconds to the next phase
+        # Calculate minutes to the next phase
         next_key = keys[(i + 1) % len(keys)]
         next_time = sun_times[next_key]
-        total_seconds = _minutes_between_times(time, next_time)
+        total_minutes = _minutes_between_times(time, next_time)
         
         # Create a Phase instance and add it to the list
-        phases.append(Phase(name=key, start_time=time, total_seconds=total_seconds))
+        phases.append(Phase(name=key, start_time=time, total_minutes=total_minutes))
     
     return phases
 

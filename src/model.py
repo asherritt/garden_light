@@ -12,12 +12,12 @@ class Phase(BaseModel):
     name: str
     start_time: str
     lamps_on: bool = False
-    total_seconds: int
+    total_minutes: int
 
 class PhaseColor(BaseModel):
     name: str
     lamps_on: bool = False
-    fill_light: Any
+    fill_light: tuple
     cyc: List[SegColor3] = Field(..., description="An array of 5 SegmentColor3 models")
 
     @validator("cyc")

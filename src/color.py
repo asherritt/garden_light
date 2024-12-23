@@ -6,7 +6,7 @@ phase_colors = [
     PhaseColor(
         name='midnight',
         lamps_on=True,
-        fill_light=Color(0, 40, 0, 20),
+        fill_light=(0, 40, 0, 20),
         cyc=[
             SegColor3(red=81, green=85, blue=94),
             SegColor3(red=77, green=115, blue=255),
@@ -18,7 +18,7 @@ phase_colors = [
     PhaseColor(
         name='first_light',
         lamps_on=True,
-        fill_light=Color(0, 30, 0, 8),
+        fill_light=(0, 30, 0, 8),
         cyc=[
             SegColor3(red=191, green=201, blue=255),
             SegColor3(red=187, green=158, blue=255),
@@ -30,7 +30,7 @@ phase_colors = [
     PhaseColor(
         name='dawn',
         lamps_on=False,
-        fill_light=Color(90, 0, 15, 30),
+        fill_light=(90, 0, 15, 30),
         cyc=[
             SegColor3(red=255, green=206, blue=145),
             SegColor3(red=186, green=255, blue=218),
@@ -42,7 +42,7 @@ phase_colors = [
     PhaseColor(
         name='sunrise',
         lamps_on=False,
-        fill_light=Color(120, 0, 25, 45),
+        fill_light=(120, 0, 25, 45),
         cyc=[
             SegColor3(red=255, green=196, blue=87),
             SegColor3(red=255, green=176, blue=107),
@@ -54,7 +54,7 @@ phase_colors = [
     PhaseColor(
         name='solar_noon',
         lamps_on=False,
-        fill_light=Color(200, 255, 190, 255),
+        fill_light=(200, 255, 190, 255),
         cyc=[
             SegColor3(red=255, green=209, blue=171),
             SegColor3(red=255, green=216, blue=214),
@@ -66,7 +66,7 @@ phase_colors = [
     PhaseColor(
         name='golden_hour',
         lamps_on=False,
-        fill_light=Color(255, 0, 20, 90),
+        fill_light=(255, 0, 20, 90),
         cyc=[
             SegColor3(red=255, green=195, blue=166),
             SegColor3(red=255, green=222, blue=217),
@@ -78,7 +78,7 @@ phase_colors = [
     PhaseColor(
         name='sunset',
         lamps_on=False,
-        fill_light=Color(200, 0, 10, 125),
+        fill_light=(200, 0, 10, 125),
         cyc=[
             SegColor3(red=227, green=191, blue=255),
             SegColor3(red=255, green=223, blue=204),
@@ -90,7 +90,7 @@ phase_colors = [
     PhaseColor(
         name='dusk',
         lamps_on=True,
-        fill_light=Color(15, 40, 20, 10),
+        fill_light=(15, 40, 20, 10),
         cyc=[
             SegColor3(red=255, green=209, blue=253),
             SegColor3(red=184, green=198, blue=255),
@@ -102,7 +102,7 @@ phase_colors = [
     PhaseColor(
         name='last_light',
         lamps_on=True,
-        fill_light=Color(0, 10, 0, 0),
+        fill_light=(0, 10, 0, 0),
         cyc=[
             SegColor3(red=145, green=202, blue=255),
             SegColor3(red=145, green=202, blue=255),
@@ -114,7 +114,7 @@ phase_colors = [
     PhaseColor(
         name='eod',
         lamps_on=True,
-        fill_light=Color(0, 40, 0, 20),
+        fill_light=(0, 40, 0, 20),
         cyc=[
             SegColor3(red=81, green=85, blue=94),
             SegColor3(red=77, green=115, blue=255),
@@ -145,7 +145,7 @@ def get_steps(phases):
             fill_light_color = next((phase_color.fill_light for phase_color in phase_colors if phase_color.name ==  phase.name), None)
             next_fill_color =  next((phase_color.fill_light for phase_color in phase_colors if phase_color.name ==  phases[next_index].name), None)
 
-            fill_colors = _interpolate_colors(fill_light_color, next_fill_color, phase.total_seconds)
+            fill_colors = _interpolate_colors(fill_light_color, next_fill_color, phase.total_minutes)
 
             # Wrap next index back to 0
             if next_index > len(phases) -1:
