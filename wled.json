@@ -1,0 +1,54 @@
+{
+  "on": true,
+  "tt": 60000,
+  "bri": 255,
+  "ledmap": 0,
+  "mainseg": 0,
+  "seg": [
+    {
+      "id": 0,
+      "start": 0,
+      "stop": 20,
+      "len": 20,
+      "grp": 1,
+      "on": true,
+      "col": [[0, 0, 255, 0]]
+    },
+    {
+      "id": 1,
+      "start": 20,
+      "stop": 40,
+      "len": 20,
+      "grp": 1,
+      "on": true,
+      "col": [[0, 0, 255, 0]]
+    },
+    {
+      "id": 2,
+      "start": 40,
+      "stop": 60,
+      "len": 20,
+      "grp": 1,
+      "on": true,
+      "col": [[0, 0, 255, 0]]
+    },
+    {
+      "id": 3,
+      "start": 60,
+      "stop": 80,
+      "len": 20,
+      "grp": 1,
+      "on": true,
+      "col": [[0, 0, 255, 0]]
+    },
+    {
+      "id": 4,
+      "start": 80,
+      "stop": 100,
+      "len": 20,
+      "grp": 1,
+      "on": true,
+      "col": [[0, 0, 255, 0]]
+    }
+  ]
+}
