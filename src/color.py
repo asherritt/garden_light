@@ -158,23 +158,23 @@ def get_steps(phases):
             fill_light_color = next((phase_color.fill_light for phase_color in phase_colors if phase_color.name ==  phase.name), None)
             next_fill_color =  next((phase_color.fill_light for phase_color in phase_colors if phase_color.name ==  phases[next_index].name), None)
 
-            fill_colors = _interpolate_rgbw_colors(fill_light_color, next_fill_color, phase.total_minutes)
+            fill_colors_interpolated = _interpolate_rgbw_colors(fill_light_color, next_fill_color, phase.total_minutes)
 
             print("fill colors")
-            print(fill_colors)
+            print(fill_colors_interpolated)
 
             # create interpolated cyc segment colors
             cyc_colors = next((phase_color.cyc for phase_color in phase_colors if phase_color.name ==  phase.name), None)
             next_cyc_colors =  next((phase_color.cyc for phase_color in phase_colors if phase_color.name ==  phases[next_index].name), None)
 
-            cyc_colors = []
+            cyc_colors_interpolated = []
             for index, color in enumerate(cyc_colors):
                 cyc_start_color = cyc_colors[index]
                 cyc_end_color = next_cyc_colors[index]
                 cyc_colors[index] = _interpolate_rgb_colors(cyc_start_color, cyc_end_color, phase.total_minutes)
 
-            print("cyc colors")
-            print(cyc_colors)
+                print("cyc colors")
+                print(cyc_colors)
 
             # Wrap next index back to 0
             if next_index > len(phases) -1:
