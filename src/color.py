@@ -173,7 +173,7 @@ def get_steps(phases):
             for index, color in enumerate(cyc_colors):
                 cyc_start_color = cyc_colors[index]
                 cyc_end_color = next_cyc_colors[index]
-                cyc_colors[index] = _interpolate_rgb_colors(cyc_start_color, cyc_end_color, phase.total_minutes)
+                cyc_colors[index] = _interpolate_rgb_colors(cyc_start_color.to_tuple(), cyc_end_color.to_tuple(), phase.total_minutes)
 
                 print("cyc colors")
                 print(cyc_colors)
