@@ -44,7 +44,7 @@ class Step(BaseModel):
     time: str
     lamps_on: bool = False
     fill_light: Any
-    cyc: List[SegColor3] = Field(..., description="An array of 5 SegmentColor3 models")
+    cyc: List[int] = Field(..., description="An array of 5 segement colors as integer")
 
     @validator("cyc")
     def validate_cyc_length(cls, value):
