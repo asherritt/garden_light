@@ -2,62 +2,71 @@ import requests
 import schedule
 from datetime import datetime, timedelta
 import globals
+from utils import convert_rgb_int_to_rgb
 
 WLED_IP = "192.168.1.169"
 
-
-def set_closest_day_phase_preset(day_phases):
-    """Set the WLED preset for the closest day phase to the current time."""
-    now = datetime.now()
-    closest_phase = None
-    smallest_diff = timedelta(days=999999999)  # Effectively a very large timedelta
-
-    for phase in day_phases:
-        phase_time = datetime.strptime(phase.time, '%H:%M:%S').replace(
-            year=now.year, month=now.month, day=now.day
-        )
-        time_diff = abs(phase_time - now)
-        if time_diff < smallest_diff:
-            smallest_diff = time_diff
-            closest_phase = phase
-
-    if closest_phase:
-        print(f"Setting WLED preset for the closest phase: {closest_phase.name}")
-        handle_phase_execution(closest_phase)
-        # toggle_relays(closest_phase.lamps_on)
-
-
-def handle_phase_execution(phase):
-    """Handle execution of a specific phase."""
-    send_wled_preset_request(preset_number=phase.preset)
-    # toggle_relays(phase.lamps_on)
-    if phase.name == "midnight2":
-        print("Final phase executed. Preparing to reinitialize...")
-        globals.final_phase_executed = False
-
-def init_wled(day_phases):
-    final_phase_executed = False
-    schedule.clear()
-
-    # Schedule WLED requests for each phase
-    for phase in day_phases:
-        print(f"schedule for {phase.time}")
-        schedule.every().day.at(phase.time).do(handle_phase_execution, phase=phase)
-
-    # set current WLED preset   
-    set_closest_day_phase_preset(day_phases) 
-
-def send_wled_preset_request(preset_number):
+def _send_wled_set_request(cyc_rgb_colors):
     """Send API request to WLED to set a preset."""
     url = f"http://{WLED_IP}/json/state"
+
     payload = {
-        "ps": preset_number
-    }
+        "on": "true",
+        "tt": 60000,
+        "bri": 255,
+        "ledmap": 0,
+        "mainseg": 0,
+        "seg": [
+            {
+            "id": 0,
+            "start": 0,
+            "stop": 20,
+            "on": "true",
+            "col": [[cyc_rgb_colors[0]]]
+            },
+            {
+            "id": 1,
+            "start": 20,
+            "stop": 40,
+            "on": "true",
+            "col": [[cyc_rgb_colors[1]]]
+            },
+            {
+            "id": 2,
+            "start": 40,
+            "stop": 60,
+            "on": "true",
+            "col": [[cyc_rgb_colors[2]]]
+            },
+            {
+            "id": 3,
+            "start": 60,
+            "stop": 80,
+            "on": "true",
+            "col": [[cyc_rgb_colors[3]]]
+            },
+            {
+            "id": 4,
+            "start": 80,
+            "stop": 100,
+            "on": "true",
+            "col": [[cyc_rgb_colors[4]]]
+            }
+        ]
+        }
+
     try:
         response = requests.post(url, json=payload)
         if response.status_code == 200:
-            print(f"Preset {preset_number} activated successfully.")
+            print(f"cyc colors activated successfully.")
         else:
-            print(f"Failed to activate preset {preset}. Status code: {response.status_code}, Response: {response.text}")
+            print(f"Failed to activate cyc colors. Status code: {response.status_code}, Response: {response.text}")
     except requests.exceptions.RequestException as e:
         print(f"Error sending request: {e}")
+
+def set_cyc_light(cyc_color_rgb_int_segments):
+    cyc_rbg_colors = []
+    for cyc_color in cyc_color_rgb_int_segments:
+        cyc_rbg_colors.append(convert_rgb_int_to_rgb(cyc_color))
+
+    _send_wled_set_request(cyc_rbg_colors)

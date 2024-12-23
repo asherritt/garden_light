@@ -150,6 +150,7 @@ def _interpolate_rgb_colors(start_color, end_color, steps):
     color_objects = [Color(int(r), int(b), int(g)) for r, b, g in zip(r_values, b_values, g_values)]
     return color_objects
 
+
 def get_steps(phases):
     steps = []
     next_index = 1
