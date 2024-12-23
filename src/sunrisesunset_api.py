@@ -67,7 +67,7 @@ def _generate_phases(sun_times: dict) -> List[Phase]:
         total_seconds = _minutes_between_times(time, next_time)
         
         # Create a Phase instance and add it to the list
-        phases.append(Phase(name=key, start_time=time, seconds=total_seconds))
+        phases.append(Phase(name=key, start_time=time, total_seconds=total_seconds))
     
     return phases
 
