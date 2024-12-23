@@ -36,7 +36,7 @@ def init():
         _process_step(current_step)
         # Wait for one minute before processing the next step, if there are more steps
         if steps:
-            print(f"current_step.time {current_step.time}")
+            print(f"current_step {current_step}")
             time.sleep(60) 
     init()
 

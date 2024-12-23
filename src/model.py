@@ -43,6 +43,7 @@ class PhaseColor(BaseModel):
 class Step(BaseModel):
     time: str
     lamps_on: bool = False
+    phase_name: str
     fill_light: Any
     cyc: List[int] = Field(..., description="An array of 5 segement colors as integer")
 
