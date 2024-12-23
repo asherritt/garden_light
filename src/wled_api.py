@@ -12,7 +12,7 @@ def _send_wled_set_request(cyc_rgb_colors):
 
     payload = {
         "on": "true",
-        "tt": 60000,
+        "tt": 55000,
         "bri": 255,
         "ledmap": 0,
         "mainseg": 0,
@@ -54,6 +54,8 @@ def _send_wled_set_request(cyc_rgb_colors):
             }
         ]
         }
+        
+    print(f"payload: {payload}")
 
     try:
         response = requests.post(url, json=payload)
@@ -67,6 +69,8 @@ def _send_wled_set_request(cyc_rgb_colors):
 def set_cyc_light(cyc_color_rgb_int_segments):
     cyc_rbg_colors = []
     for cyc_color in cyc_color_rgb_int_segments:
-        cyc_rbg_colors.append(convert_rgb_int_to_rgb(cyc_color))
+        converted_cyc_colors = convert_rgb_int_to_rgb(cyc_color)
+        print(f"converted_cyc_colors: {converted_cyc_colors}")
+        cyc_rbg_colors.append(converted_cyc_colors)
 
     _send_wled_set_request(cyc_rbg_colors)

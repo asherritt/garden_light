@@ -37,7 +37,7 @@ def init():
         # Wait for one minute before processing the next step, if there are more steps
         if steps:
             print("Waiting for the next step...")
-            time.sleep(5) 
+            time.sleep(60) 
     init()
 
 
