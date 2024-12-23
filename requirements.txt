@@ -1,7 +1,8 @@
-rpi_ws281x
 argparse
-schedule==1.2.0
-requests==2.31.0
 numpy
+pydantic
 pytweening
+requests==2.31.0
+rpi_ws281x
 RPi.GPIO
+schedule==1.2.0

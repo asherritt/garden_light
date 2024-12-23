@@ -1,8 +1,131 @@
 from rpi_ws281x import Color
 import pytweening
+from model import PhaseColor, SegColor3, Step
 
+phase_colors = [
+    PhaseColor(
+        name='midnight',
+        lamps_on=True,
+        fill_light=Color(0, 40, 0, 20),
+        cyc=[
+            SegColor3(red=81, green=85, blue=94),
+            SegColor3(red=77, green=115, blue=255),
+            SegColor3(red=92, green=79, blue=68),
+            SegColor3(red=91, green=99, blue=115),
+            SegColor3(red=37, green=37, blue=71),
+        ],
+    ),
+    PhaseColor(
+        name='first_light',
+        lamps_on=True,
+        fill_light=Color(0, 30, 0, 8),
+        cyc=[
+            SegColor3(red=191, green=201, blue=255),
+            SegColor3(red=187, green=158, blue=255),
+            SegColor3(red=77, green=115, blue=255),
+            SegColor3(red=77, green=115, blue=255),
+            SegColor3(red=77, green=115, blue=255),
+        ],
+    ),
+    PhaseColor(
+        name='dawn',
+        lamps_on=False,
+        fill_light=Color(90, 0, 15, 30),
+        cyc=[
+            SegColor3(red=255, green=206, blue=145),
+            SegColor3(red=186, green=255, blue=218),
+            SegColor3(red=158, green=161, blue=255),
+            SegColor3(red=77, green=115, blue=255),
+            SegColor3(red=173, green=184, blue=255),
+        ],
+    ),
+    PhaseColor(
+        name='sunrise',
+        lamps_on=False,
+        fill_light=Color(120, 0, 25, 45),
+        cyc=[
+            SegColor3(red=255, green=196, blue=87),
+            SegColor3(red=255, green=176, blue=107),
+            SegColor3(red=255, green=188, blue=112),
+            SegColor3(red=255, green=184, blue=112),
+            SegColor3(red=242, green=255, blue=251),
+        ],
+    ),
+    PhaseColor(
+        name='solar_noon',
+        lamps_on=False,
+        fill_light=Color(200, 255, 190, 255),
+        cyc=[
+            SegColor3(red=255, green=209, blue=171),
+            SegColor3(red=255, green=216, blue=214),
+            SegColor3(red=255, green=188, blue=112),
+            SegColor3(red=255, green=228, blue=227),
+            SegColor3(red=255, green=237, blue=199),
+        ],
+    ),
+    PhaseColor(
+        name='golden_hour',
+        lamps_on=False,
+        fill_light=Color(255, 0, 20, 90),
+        cyc=[
+            SegColor3(red=255, green=195, blue=166),
+            SegColor3(red=255, green=222, blue=217),
+            SegColor3(red=255, green=166, blue=115),
+            SegColor3(red=255, green=156, blue=145),
+            SegColor3(red=255, green=197, blue=158),
+        ],
+    ),
+    PhaseColor(
+        name='sunset',
+        lamps_on=False,
+        fill_light=Color(200, 0, 10, 125),
+        cyc=[
+            SegColor3(red=227, green=191, blue=255),
+            SegColor3(red=255, green=223, blue=204),
+            SegColor3(red=255, green=155, blue=97),
+            SegColor3(red=255, green=137, blue=64),
+            SegColor3(red=255, green=67, blue=20),
+        ],
+    ),
+    PhaseColor(
+        name='dusk',
+        lamps_on=True,
+        fill_light=Color(15, 40, 20, 10),
+        cyc=[
+            SegColor3(red=255, green=209, blue=253),
+            SegColor3(red=184, green=198, blue=255),
+            SegColor3(red=255, green=209, blue=253),
+            SegColor3(red=255, green=209, blue=253),
+            SegColor3(red=255, green=209, blue=253),
+        ],
+    ),
+    PhaseColor(
+        name='last_light',
+        lamps_on=True,
+        fill_light=Color(0, 10, 0, 0),
+        cyc=[
+            SegColor3(red=145, green=202, blue=255),
+            SegColor3(red=145, green=202, blue=255),
+            SegColor3(red=145, green=202, blue=255),
+            SegColor3(red=145, green=202, blue=255),
+            SegColor3(red=145, green=202, blue=255),
+        ],
+    ),
+    PhaseColor(
+        name='eod',
+        lamps_on=True,
+        fill_light=Color(0, 40, 0, 20),
+        cyc=[
+            SegColor3(red=81, green=85, blue=94),
+            SegColor3(red=77, green=115, blue=255),
+            SegColor3(red=92, green=79, blue=68),
+            SegColor3(red=91, green=99, blue=115),
+            SegColor3(red=37, green=37, blue=71),
+        ],
+    ),
+]
 
-def interpolate_colors(start_color, end_color, steps):
+def _interpolate_colors(start_color, end_color, steps):
     # Unpack the start and end colors
     r1, b1, g1, w1 = start_color
     r2, b2, g2, w2 = end_color
@@ -15,16 +138,24 @@ def interpolate_colors(start_color, end_color, steps):
     color_objects = [Color(int(r), int(b), int(g), int(w)) for r, b, g, w in zip(r_values, b_values, g_values, w_values)]
     return color_objects
 
-def init_color_steps(day_phases):
-    print("init_color_steps")
-    color_steps = []
+def get_steps(phases):
+    steps = []
     next_index = 1
-    for d in day_phases:
-        next_color = day_phases[next_index].color
-        color_steps.extend(interpolate_colors(d.color, next_color, d.steps))
-        next_index += 1
-        print(f'name: {d.name} time: {d.time} steps: {d.steps}')
-        if next_index > len(day_phases) -1:
-            next_index = 0
-         
-    return color_steps
+    for phase in phases:
+            fill_light_color = next((phase_color.fill_light for phase_color in phase_colors if phase_color.name ==  phase.name), None)
+            next_fill_color =  next((phase_color.fill_light for phase_color in phase_colors if phase_color.name ==  phases[next_index].name), None)
+
+            fill_colors = _interpolate_colors(fill_light_color, next_fill_color, phase.total_seconds)
+
+            # Wrap next index back to 0
+            if next_index > len(phases) -1:
+                next_index = 0
+            
+            print(fill_colors)
+            
+
+            # color_steps.extend(_interpolate_colors(d.color, next_color, d.steps))
+            # next_index += 1
+            # print(f'name: {d.name} time: {d.time} steps: {d.steps}')
+            # if next_index > len(day_phases) -1:
+            #     next_index = 0
