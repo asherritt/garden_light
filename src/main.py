@@ -14,7 +14,7 @@ def _get_steps_up_to_now(steps: List[Step]) -> List[Step]:
     # Filter steps that are less than or equal to the current time
     steps_up_to_now = [
         step for step in steps
-        if datetime.strptime(step.time, "%Y-%m-%d %H:%M:%S") <= current_time
+        if datetime.strptime(step.time, "%H:%M:%S") <= current_time
     ]
     
     return steps_up_to_now
