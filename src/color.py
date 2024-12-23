@@ -192,9 +192,6 @@ def get_steps(phases):
                 
     
     print(f"steps length: {len(steps)}")
-            # color_steps.extend(_interpolate_colors(d.color, next_color, d.steps))
-            # next_index += 1
-            # print(f'name: {d.name} time: {d.time} steps: {d.steps}')
-            # if next_index > len(day_phases) -1:
-            #     next_index = 0
+    for s in steps:
+         print(s)
     return steps
