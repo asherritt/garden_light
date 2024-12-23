@@ -175,6 +175,9 @@ def get_steps(phases):
                 for i in range(len(cyc_colors))
             ]
 
+              
+            print(f"cyc_colors_interpolated: {cyc_colors_interpolated}")
+
             steps = []
             for m in range(phase.total_minutes):
                 interpolated_cyc = [cyc_colors_interpolated[i][m] for i in range(len(cyc_colors))]
@@ -192,7 +195,7 @@ def get_steps(phases):
                 next_index = 0
                 
     
-    print(f"steps: {cyc_colors_interpolated}")
+    print(f"steps length: {len(steps)}")
             # color_steps.extend(_interpolate_colors(d.color, next_color, d.steps))
             # next_index += 1
             # print(f'name: {d.name} time: {d.time} steps: {d.steps}')
