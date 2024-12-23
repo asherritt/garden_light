@@ -30,7 +30,7 @@ class Phase(BaseModel):
 
 class PhaseColor(BaseModel):
     name: str
-    lamps_on: bool = False
+    lamps_on: bool
     fill_light: tuple
     cyc: List[SegColor3] = Field(..., description="An array of 5 SegmentColor3 models")
 

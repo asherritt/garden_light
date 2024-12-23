@@ -190,8 +190,4 @@ def get_steps(phases):
             if next_index > len(phases) -1:
                 next_index = 0
                 
-    
-    print(f"steps length: {len(steps)}")
-    for s in steps:
-         print(s)
     return steps
