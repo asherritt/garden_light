@@ -168,12 +168,11 @@ def get_steps(phases):
             # create interpolated cyc segment colors
             cyc_colors = next((phase_color.cyc for phase_color in phase_colors if phase_color.name ==  phase.name), None)
             next_cyc_colors =  next((phase_color.cyc for phase_color in phase_colors if phase_color.name ==  phases[next_index].name), None)
-
+            
             cyc_colors_interpolated = []
             for index, color in enumerate(cyc_colors):
-                cyc_start_color = cyc_colors[index]
                 cyc_end_color = next_cyc_colors[index]
-                cyc_colors[index] = _interpolate_rgb_colors(cyc_start_color.to_tuple(), cyc_end_color.to_tuple(), phase.total_minutes)
+                cyc_colors_interpolated[index] = _interpolate_rgb_colors(color.to_tuple(), cyc_end_color.to_tuple(), phase.total_minutes)
 
                 print("cyc colors")
                 print(cyc_colors)
