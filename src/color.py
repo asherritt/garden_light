@@ -139,8 +139,6 @@ def _interpolate_rgbw_colors(start_color, end_color, steps):
     return color_objects
 
 def _interpolate_rgb_colors(start_color, end_color, steps):
-    print(type(start_color))
-    print(type(end_color))
     # Unpack the start and end colors
     r1, b1, g1 = start_color
     r2, b2, g2 = end_color
@@ -162,24 +160,22 @@ def get_steps(phases):
 
             fill_colors_interpolated = _interpolate_rgbw_colors(fill_light_color, next_fill_color, phase.total_minutes)
 
-            print("fill colors")
-            print(fill_colors_interpolated)
-
             # create interpolated cyc segment colors
             cyc_colors = next((phase_color.cyc for phase_color in phase_colors if phase_color.name ==  phase.name), None)
             next_cyc_colors =  next((phase_color.cyc for phase_color in phase_colors if phase_color.name ==  phases[next_index].name), None)
             
             cyc_colors_interpolated = []
-            for index, color in enumerate(cyc_colors):
-                cyc_end_color = next_cyc_colors[index]
-                cyc_colors_interpolated[index] = _interpolate_rgb_colors(color.to_tuple(), cyc_end_color.to_tuple(), phase.total_minutes)
-
-                print("cyc colors")
-                print(cyc_colors)
-
+            for index in range(len(cyc_colors)):
+                cyc_colors_interpolated.append((_interpolate_rgb_colors(cyc_colors[index].to_tuple(), next_cyc_colors[index].to_tuple(), phase.total_minutes)))
+                
+            print(f"phase: {phase}")
+            print(f"fill_colors_interpolated: {len(fill_colors_interpolated)}")
+            print(f"cyc_colors_interpolated: {len(cyc_colors_interpolated[0])}")
+                
             # Wrap next index back to 0
             if next_index > len(phases) -1:
                 next_index = 0
+                
  
             # color_steps.extend(_interpolate_colors(d.color, next_color, d.steps))
             # next_index += 1
