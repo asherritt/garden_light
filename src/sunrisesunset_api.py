@@ -5,6 +5,9 @@ from dataclasses import dataclass
 import time
 from model import Phase
 
+# Location for sun times API
+LAT, LNG = 34.0900, -118.036873
+
 def _fetch_sun_times():
     """Fetch sun times from the API."""
     print("Fetching sun times...")
