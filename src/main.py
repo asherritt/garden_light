@@ -31,7 +31,7 @@ def init():
 
     phases = get_phases()
 
-    steps = _get_steps_up_to_now(get_steps(phases))
+    steps = _get_steps_after_now(get_steps(phases))
 
     while steps:
         # Dequeue the first step
@@ -43,11 +43,16 @@ def init():
         # Wait for one minute before processing the next step, if there are more steps
         if steps:
             print("Waiting for the next step...")
-            time.sleep(4) 
+            time.sleep(5) 
 
     init()
     # Initialize color steps for NeoPixel
     # color_steps = init_color_steps(day_phases)
+    
+def _process_step(step):
+    # 1. set strip color
+    # 2. send wled request
+    # 3. Check relays
 
 
 if __name__ == '__main__':
