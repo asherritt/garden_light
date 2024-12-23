@@ -182,7 +182,7 @@ def get_steps(phases):
                     Step(
                         time=phase.add_minutes(m),
                         lamps_on=phase.lamps_on,
-                        fill_light=fill_light_color[m],
+                        fill_light=fill_colors_interpolated[m],
                         cyc=interpolated_cyc,
                     )
                 )
