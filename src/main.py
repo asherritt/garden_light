@@ -1,26 +1,24 @@
 import argparse
 from datetime import datetime
+import time
 from typing import List
 from garden_fill_light import *
 from model import Step
 from sunrisesunset_api import get_phases 
 from color import get_steps
 
-def _get_steps_up_to_now(steps: List[Step]) -> List[Step]:
-    """Slice the list of steps up to the current time."""
-    # Get the current time
+def _get_steps_after_now(steps: List[Step]) -> List[Step]:
+    """Slice the list of steps that occur after the current time."""
+    # Get the current time as a time object
     current_time = datetime.now().time()
-    
-    print(f"current_time: {current_time}")
 
-    # Filter steps that are less than or equal to the current time
-    steps_up_to_now = [
-        step
-        for step in steps
+    # Filter steps that occur after the current time
+    steps_after_now = [
+        step for step in steps
         if datetime.strptime(step.time, "%H:%M:%S").time() >= current_time
     ]
     
-    return steps_up_to_now
+    return steps_after_now
 
 def init():
     # 4. Interpolate colors for each step and put in list
@@ -35,8 +33,19 @@ def init():
 
     steps = _get_steps_up_to_now(get_steps(phases))
 
-    print(f"steps: {len(steps)}")
+    while steps:
+        # Dequeue the first step
+        current_step = steps.pop(0)
+        
+        # Process the current step (you can replace this with your own logic)
+        print(f"Processing step at time {current_step}")
+        
+        # Wait for one minute before processing the next step, if there are more steps
+        if steps:
+            print("Waiting for the next step...")
+            time.sleep(4) 
 
+    init()
     # Initialize color steps for NeoPixel
     # color_steps = init_color_steps(day_phases)
 
