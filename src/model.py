@@ -8,6 +8,10 @@ class SegColor3(BaseModel):
     green: int = Field(..., ge=0, le=255, description="Color value between 0 and 255")
     blue: int = Field(..., ge=0, le=255, description="Color value between 0 and 255")
 
+    def to_tuple(self) -> tuple:
+        """Return the red, green, and blue values as a tuple."""
+        return (self.red, self.green, self.blue)
+
 class Phase(BaseModel):
     name: str
     start_time: str
