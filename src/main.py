@@ -24,8 +24,7 @@ def _get_steps_after_now(steps: List[Step]) -> List[Step]:
 def _process_step(step):
     print(f"Processing step {step}")
     set_light(step.fill_light)
-    wled_api(step.cyc)
-    # 2. send wled request
+    set_cyc_light(step.cyc)
     # 3. Check relays
 
 def init():
