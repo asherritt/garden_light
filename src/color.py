@@ -139,6 +139,8 @@ def _interpolate_rgbw_colors(start_color, end_color, steps):
     return color_objects
 
 def _interpolate_rgb_colors(start_color, end_color, steps):
+    print(type(start_color))
+    print(type(end_color))
     # Unpack the start and end colors
     r1, b1, g1 = start_color
     r2, b2, g2 = end_color
@@ -179,9 +181,7 @@ def get_steps(phases):
             # Wrap next index back to 0
             if next_index > len(phases) -1:
                 next_index = 0
-            
-            
-
+ 
             # color_steps.extend(_interpolate_colors(d.color, next_color, d.steps))
             # next_index += 1
             # print(f'name: {d.name} time: {d.time} steps: {d.steps}')
