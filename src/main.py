@@ -20,39 +20,24 @@ def _get_steps_after_now(steps: List[Step]) -> List[Step]:
     
     return steps_after_now
 
+def _process_step(step):
+    print(f"Processing step {step}")
+    set_light(step.fill_light)
+    # 2. send wled request
+    # 3. Check relays
+
 def init():
-    # 4. Interpolate colors for each step and put in list
-    # 5. Start sequence
-    # 6. Reinvoke init once all done
-
-    #  """Initialize phases, schedules, and color steps."""
-    # global color_steps
-    # print("Initializing phases, schedules, and color steps...")
-
     phases = get_phases()
-
     steps = _get_steps_after_now(get_steps(phases))
-
     while steps:
         # Dequeue the first step
         current_step = steps.pop(0)
-        
-        # Process the current step (you can replace this with your own logic)
-        print(f"Processing step at time {current_step}")
-        
+        _process_step(current_step)
         # Wait for one minute before processing the next step, if there are more steps
         if steps:
             print("Waiting for the next step...")
             time.sleep(5) 
-
     init()
-    # Initialize color steps for NeoPixel
-    # color_steps = init_color_steps(day_phases)
-    
-def _process_step(step):
-    # 1. set strip color
-    # 2. send wled request
-    # 3. Check relays
 
 
 if __name__ == '__main__':

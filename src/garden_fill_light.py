@@ -14,3 +14,9 @@ LED_STRIP = ws.SK6812_STRIP_BRGW
 
 strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
 strip.begin()
+
+def set_light(color_rgbw_int):
+    for i in range(strip.numPixels()):
+        strip.setPixelColor(i, color_rgbw_int)
+
+    strip.show()
