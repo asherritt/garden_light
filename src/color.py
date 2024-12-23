@@ -156,20 +156,36 @@ def get_steps(phases):
     for phase in phases:
             # create interpolated fill colors
             fill_light_color = next((phase_color.fill_light for phase_color in phase_colors if phase_color.name ==  phase.name), None)
+            assert fill_light_color is not None, f"No matching phase color found for phase name '{phase.name}'."
+            
             next_fill_color =  next((phase_color.fill_light for phase_color in phase_colors if phase_color.name ==  phases[next_index].name), None)
+            assert next_fill_color is not None, f"No matching phase color found for phase name '{phases[next_index].name}'."
 
             fill_colors_interpolated = _interpolate_rgbw_colors(fill_light_color, next_fill_color, phase.total_minutes)
 
-            # create interpolated cyc segment colors
-            cyc_colors = next((phase_color.cyc for phase_color in phase_colors if phase_color.name ==  phase.name), None)
-            next_cyc_colors =  next((phase_color.cyc for phase_color in phase_colors if phase_color.name ==  phases[next_index].name), None)
-            
-            cyc_colors_interpolated = []
-            for index in range(len(cyc_colors)):
-                cyc_colors_interpolated.append((_interpolate_rgb_colors(cyc_colors[index].to_tuple(), next_cyc_colors[index].to_tuple(), phase.total_minutes)))
+           # Interpolating cyc segment colors
+            cyc_colors = next((pc.cyc for pc in phase_colors if pc.name == phase.name), None)
+            assert cyc_colors is not None, f"No matching phase color found for phase name '{phases[next_index].name}'."
 
+            next_cyc_colors = next((pc.cyc for pc in phase_colors if pc.name == phases[next_index].name), None)
+            assert next_cyc_colors is not None, f"No matching phase color found for phase name '{phases[next_index].name}'."
+
+            cyc_colors_interpolated = [
+                _interpolate_rgb_colors(cyc_colors[i].to_tuple(), next_cyc_colors[i].to_tuple(), phase.total_minutes)
+                for i in range(len(cyc_colors))
+            ]
+
+            steps = []
             for m in range(phase.total_minutes):
-                 steps.append(Step(time=phase.add_minutes(m), lamps_on=phase.lamps_on, fill_light=fill_colors_interpolated[m], cyc=cyc_colors_interpolated[m]))
+                interpolated_cyc = [cyc_colors_interpolated[i][m] for i in range(len(cyc_colors))]
+                steps.append(
+                    Step(
+                        time=phase.add_minutes(m),
+                        lamps_on=phase.lamps_on,
+                        fill_light=fill_light_color[m],
+                        cyc=interpolated_cyc,
+                    )
+                )
          
             # Wrap next index back to 0
             if next_index > len(phases) -1:
