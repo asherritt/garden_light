@@ -40,21 +40,21 @@ phase_colors = [
         ],
     ),
     PhaseColor(
-        name='sunrise',
+        name='mid_morning',
         lamps_on=False,
-        fill_light=(120, 0, 25, 45),
+        fill_light=(175, 0, 25, 200),
         cyc=[
-            SegColor3(red=255, green=196, blue=87),
-            SegColor3(red=255, green=176, blue=107),
-            SegColor3(red=255, green=188, blue=112),
-            SegColor3(red=255, green=184, blue=112),
-            SegColor3(red=242, green=255, blue=251),
+            SegColor3(red=255, green=87, blue=87),
+            SegColor3(red=255, green=90, blue=107),
+            SegColor3(red=255, green=100, blue=112),
+            SegColor3(red=255, green=100, blue=112),
+            SegColor3(red=242, green=200, blue=251),
         ],
     ),
     PhaseColor(
         name='solar_noon',
         lamps_on=False,
-        fill_light=(200, 255, 190, 255),
+        fill_light=(200, 220, 190, 255),
         cyc=[
             SegColor3(red=255, green=209, blue=171),
             SegColor3(red=255, green=216, blue=214),
@@ -130,24 +130,24 @@ def _interpolate_rgbw_colors(start_color, end_color, steps):
     r1, b1, g1, w1 = start_color
     r2, b2, g2, w2 = end_color
     # Generate interpolated values for each color component
-    r_values = [round(pytweening.easeInOutSine(0.75)(i / (steps - 1)) * (r2 - r1) + r1) for i in range(steps)]
-    g_values = [round(pytweening.easeInOutSine(0.75)(i / (steps - 1)) * (g2 - g1) + g1) for i in range(steps)]
-    b_values = [round(pytweening.easeInOutSine(0.75)) * (b2 - b1) + b1) for i in range(steps)]
-    w_values = [round(pytweening.easeInOutSine(0.75)) * (w2 - w1) + w1) for i in range(steps)]
+    r_values = [round(pytweening.easeInOutCubic(i / (steps - 1)) * (r2 - r1) + r1) for i in range(steps)]
+    g_values = [round(pytweening.easeInOutCubic(i / (steps - 1)) * (g2 - g1) + g1) for i in range(steps)]
+    b_values = [round(pytweening.easeInOutCubic(i / (steps - 1)) * (b2 - b1) + b1) for i in range(steps)]
+    w_values = [round(pytweening.easeInOutCubic(i / (steps - 1)) * (w2 - w1) + w1) for i in range(steps)]
     # Create color objects for each step
-    color_objects = [Color(int(r), int(g), int(b), int(w)) for r, g, b, w in zip(r_values, g_values, b_values, w_values)]
+    color_objects = [Color(int(r), int(b), int(g), int(w)) for r, b, g, w in zip(r_values, b_values, g_values, w_values)]
     return color_objects
 
 def _interpolate_rgb_colors(start_color, end_color, steps):
     # Unpack the start and end colors
-    r1, g1, b1 = start_color
-    r2, g2, b2 = end_color
+    r1, b1, g1 = start_color
+    r2, b2, g2 = end_color
     # Generate interpolated values for each color component
-    r_values = [round(pytweening.easeInOutSine(0.75) * (r2 - r1) + r1) for i in range(steps)]
-    g_values = [round(pytweening.easeInOutSine(0.75) * (g2 - g1) + g1) for i in range(steps)]
-    b_values = [round(pytweening.easeInOutSine(0.75) * (b2 - b1) + b1) for i in range(steps)]
+    r_values = [round(pytweening.easeInOutCubic(i / (steps - 1)) * (r2 - r1) + r1) for i in range(steps)]
+    g_values = [round(pytweening.easeInOutCubic(i / (steps - 1)) * (g2 - g1) + g1) for i in range(steps)]
+    b_values = [round(pytweening.easeInOutCubic(i / (steps - 1)) * (b2 - b1) + b1) for i in range(steps)]
     # Create color objects for each step
-    color_objects = [Color(int(r), int(g), int(b)) for r, g, b in zip(r_values, g_values, b_values)]
+    color_objects = [Color(int(r), int(b), int(g)) for r, b, g in zip(r_values, b_values, g_values)]
     return color_objects
 
 
