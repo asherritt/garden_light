@@ -17,6 +17,7 @@ strip.begin()
 
 def set_light(color_rgbw_int):
     for i in range(strip.numPixels()):
-        strip.setPixelColor(i, color_rgbw_int)
+        # strip.setPixelColor(i, color_rgbw_int)
+        strip.setPixelColorRGB(i, 255, 0, 0, 0)
 
     strip.show()
