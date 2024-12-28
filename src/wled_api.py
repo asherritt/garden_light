@@ -11,7 +11,7 @@ def _send_wled_set_request(cyc_rgb_colors):
 
     payload = {
         "on": True,
-        "tt": 450,
+        "tt": 55000,
         "bri": 255,
         "ledmap": 0,
         "mainseg": 0,

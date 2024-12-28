@@ -19,8 +19,7 @@ def _get_steps_after_now(steps: List[Step]) -> List[Step]:
         if datetime.strptime(step.time, "%H:%M:%S").time() >= current_time
     ]
     
-    return steps
-    # return steps_after_now
+    return steps_after_now
 
 def _process_step(step):
     print(f"Processing step {step}")
@@ -38,7 +37,7 @@ def init():
         # Wait for one minute before processing the next step, if there are more steps
         if steps:
             print(f"current_step {current_step}")
-            time.sleep(.5) 
+            time.sleep(60) 
     init()
 
 
