@@ -21,43 +21,38 @@ def _send_wled_set_request(cyc_rgb_colors):
             "start": 0,
             "stop": 20,
             "on": True,
-            "col": [[cyc_rgb_colors[0]]]
+            "col": [list(cyc_rgb_colors[0])]
             },
             {
             "id": 1,
             "start": 20,
             "stop": 40,
             "on": True,
-            "col": [[cyc_rgb_colors[1]]]
+            "col": [list(cyc_rgb_colors[1])]
             },
             {
             "id": 2,
             "start": 40,
             "stop": 60,
             "on": True,
-            "col": [[cyc_rgb_colors[2]]]
+            "col": [list(cyc_rgb_colors[2])]
             },
             {
             "id": 3,
             "start": 60,
             "stop": 80,
             "on": True,
-            "col": [[cyc_rgb_colors[3]]]
+            "col": [list(cyc_rgb_colors[3])]
             },
             {
             "id": 4,
             "start": 80,
             "stop": 100,
             "on": True,
-            "col": [[cyc_rgb_colors[4]]]
+            "col": [list(cyc_rgb_colors[4])]
             }
         ]
         }
-    # Convert color strings to lists of integers
-    for segment in payload["seg"]:
-        for i, color_str in enumerate(segment["col"]):
-            # Convert the color string to a list of integers
-            segment["col"][i] = [int(value) for value in color_str[0].split(", ")]
 
     print(f"payload: {payload}")
 
