@@ -3,16 +3,6 @@ from pydantic import BaseModel, Field, validator
 from rpi_ws281x import Color
 from datetime import datetime, timedelta
 
-
-class SegColor3(BaseModel):
-    red: int = Field(..., ge=0, le=255, description="Color value between 0 and 255")
-    green: int = Field(..., ge=0, le=255, description="Color value between 0 and 255")
-    blue: int = Field(..., ge=0, le=255, description="Color value between 0 and 255")
-
-    def to_tuple(self) -> tuple:
-        """Return the red, green, and blue values as a tuple."""
-        return (self.red, self.green, self.blue)
-
 class Phase(BaseModel):
     name: str
     start_time: str
@@ -31,24 +21,24 @@ class Phase(BaseModel):
 class PhaseColor(BaseModel):
     name: str
     lamps_on: bool
-    fill_light: tuple
-    cyc: List[SegColor3] = Field(..., description="An array of 5 SegmentColor3 models")
+    fill_light: List[tuple]
+    cyc: List[tuple] = Field(..., description="An array of 5 color tuples")
 
     @validator("cyc")
     def validate_cyc_length(cls, value):
         if len(value) != 5:
-            raise ValueError("The 'cyc' field must contain exactly 5 SegmentColor3 models")
+            raise ValueError("The 'cyc' field must contain exactly 5 color tuples")
         return value
 
 class Step(BaseModel):
     time: str
     lamps_on: bool = False
     phase_name: str
-    fill_light: Any
-    cyc: List[int] = Field(..., description="An array of 5 segement colors as integer")
+    fill_light: List[tuple]
+    cyc: List[tuple] = Field(..., description="An array of 5 color tuples")
 
     @validator("cyc")
     def validate_cyc_length(cls, value):
         if len(value) != 5:
-            raise ValueError("The 'cyc' field must contain exactly 5 SegmentColor3 models")
+            raise ValueError("The 'cyc' field must contain exactly 5 color tuples")
         return value

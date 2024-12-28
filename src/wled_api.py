@@ -71,11 +71,25 @@ def _send_wled_set_request(cyc_rgb_colors):
     except requests.exceptions.RequestException as e:
         print(f"Error sending request: {e}")
 
-def set_cyc_light(cyc_color_rgb_int_segments):
-    cyc_rbg_colors = []
-    for cyc_color in cyc_color_rgb_int_segments:
-        converted_cyc_colors = convert_rgb_int_to_rgb(cyc_color)
-        print(f"converted_cyc_colors: {converted_cyc_colors}")
-        cyc_rbg_colors.append(converted_cyc_colors)
+def set_cyc_light(cyc_color_tuples):
+    """
+    Set the cyclical light segments to the colors in the provided list of tuples.
+    :param cyc_color_tuples: A list of tuples representing RGB or RGBW colors.
+    """
+    cyc_rgb_colors = []
 
-    _send_wled_set_request(cyc_rbg_colors)
+    for cyc_color in cyc_color_tuples:
+        # Validate and process the color tuple
+        if len(cyc_color) == 3:  # RGB
+            r, g, b = cyc_color
+            w = 0  # Default white channel to 0
+        elif len(cyc_color) == 4:  # RGBW
+            r, g, b, w = cyc_color
+        else:
+            raise ValueError(f"Invalid color tuple: {cyc_color}. Must be RGB or RGBW.")
+
+        # Append the processed color
+        cyc_rgb_colors.append((r, g, b, w))
+
+    # Send the processed colors to the WLED API
+    _send_wled_set_request(cyc_rgb_colors)
