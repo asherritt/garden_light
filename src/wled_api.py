@@ -2,7 +2,6 @@ import requests
 import schedule
 from datetime import datetime, timedelta
 import globals
-from utils import convert_rgb_int_to_rgb
 
 WLED_IP = "192.168.1.169"
 
