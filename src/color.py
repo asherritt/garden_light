@@ -6,7 +6,7 @@ phase_colors = [
     PhaseColor(
         name='midnight',
         lamps_on=True,
-        fill_light=[(0, 40, 0, 20), (0, 40, 0, 20), (0, 40, 0, 20)],
+        fill_light=[(0, 0, 50, 0), (0, 0, 50, 25), (0, 0, 25, 50)],
         cyc=[
             (81, 85, 94),
             (77, 115, 255),
@@ -18,7 +18,7 @@ phase_colors = [
     PhaseColor(
         name='first_light',
         lamps_on=True,
-        fill_light=[(0, 30, 0, 8), (0, 30, 0, 8), (0, 30, 0, 8)],
+        fill_light=[(25, 0, 50, 0), (0, 0, 50, 40), (25, 0, 25, 50)],
         cyc=[
             (191, 201, 255),
             (187, 158, 255),
@@ -30,7 +30,7 @@ phase_colors = [
     PhaseColor(
         name='dawn',
         lamps_on=False,
-        fill_light=[(90, 0, 15, 30), (90, 0, 15, 30), (90, 0, 15, 30)],
+        fill_light=[(25, 0, 30, 30), (0, 0, 50, 40), (25, 0, 30, 75)],
         cyc=[
             (255, 206, 145),
             (186, 255, 218),
@@ -42,7 +42,7 @@ phase_colors = [
     PhaseColor(
         name='sunrise',
         lamps_on=False,
-        fill_light=[(175, 0, 25, 200), (175, 0, 25, 200), (175, 0, 25, 200)],
+        fill_light=[(200, 0, 85, 200), (100, 0, 50, 200), (180, 0, 25, 180)],
         cyc=[
             (255, 87, 87),
             (255, 90, 107),
@@ -54,7 +54,7 @@ phase_colors = [
     PhaseColor(
         name='solar_noon',
         lamps_on=False,
-        fill_light=[(200, 220, 190, 255), (200, 220, 190, 255), (200, 220, 190, 255)],
+        fill_light=[(200, 220, 190, 255), (255, 220, 190, 180), (200, 255, 190, 255)],
         cyc=[
             (255, 209, 171),
             (255, 216, 214),
@@ -66,7 +66,7 @@ phase_colors = [
     PhaseColor(
         name='golden_hour',
         lamps_on=False,
-        fill_light=[(255, 0, 20, 90), (255, 0, 20, 90), (255, 0, 20, 90)],
+        fill_light=[(255, 0, 20, 90), (200, 0, 60, 90), (200, 0, 70, 255)],
         cyc=[
             (255, 195, 166),
             (255, 222, 217),
@@ -78,7 +78,7 @@ phase_colors = [
     PhaseColor(
         name='sunset',
         lamps_on=False,
-        fill_light=[(200, 0, 10, 125), (200, 0, 10, 125), (200, 0, 10, 125)],
+        fill_light=[(255, 190, 0, 190), (180, 80, 0, 125), (180, 40, 40, 200)],
         cyc=[
             (227, 191, 255),
             (255, 223, 204),
