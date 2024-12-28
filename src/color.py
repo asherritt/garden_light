@@ -40,7 +40,7 @@ phase_colors = [
         ],
     ),
     PhaseColor(
-        name='mid_morning',
+        name='sunrise',
         lamps_on=False,
         fill_light=[(175, 0, 25, 200), (175, 0, 25, 200), (175, 0, 25, 200)],
         cyc=[
@@ -90,7 +90,7 @@ phase_colors = [
     PhaseColor(
         name='dusk',
         lamps_on=True,
-        fill_light=[(15, 40, 20, 10) (15, 40, 20, 10), (15, 40, 20, 10)],
+        fill_light=[(15, 40, 20, 10), (15, 40, 20, 10), (15, 40, 20, 10)],
         cyc=[
             (255, 209, 253),
             (184, 198, 255),
