@@ -1,6 +1,6 @@
 argparse
 numpy
-pydantic
+pydantic>=1.9.0,<2.0.0
 pytweening
 requests==2.31.0
 rpi_ws281x
