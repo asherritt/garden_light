@@ -11,25 +11,25 @@ def init_relays():
     """Initialize GPIO pins for relay control."""
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(PIN_RELAY_1, GPIO.OUT)
-    GPIO.setup(PIN_RELAY_2, GPIO.OUT)
-    GPIO.setup(PIN_RELAY_3, GPIO.OUT)
-    GPIO.setup(PIN_RELAY_4, GPIO.OUT)
+    # GPIO.setup(PIN_RELAY_2, GPIO.OUT)
+    # GPIO.setup(PIN_RELAY_3, GPIO.OUT)
+    # GPIO.setup(PIN_RELAY_4, GPIO.OUT)
     GPIO.output(PIN_RELAY_1, GPIO.LOW)
-    GPIO.output(PIN_RELAY_2, GPIO.LOW)
-    GPIO.output(PIN_RELAY_3, GPIO.LOW)
-    GPIO.output(PIN_RELAY_4, GPIO.LOW)
+    # GPIO.output(PIN_RELAY_2, GPIO.LOW)
+    # GPIO.output(PIN_RELAY_3, GPIO.LOW)
+    # GPIO.output(PIN_RELAY_4, GPIO.LOW)
 
 def set_relays(lamps_on):
     if lamps_on:
         GPIO.output(PIN_RELAY_1, GPIO.HIGH)
-        GPIO.output(PIN_RELAY_2, GPIO.HIGH)
-        GPIO.output(PIN_RELAY_3, GPIO.HIGH)
-        GPIO.output(PIN_RELAY_4, GPIO.HIGH)
+        # GPIO.output(PIN_RELAY_2, GPIO.HIGH)
+        # GPIO.output(PIN_RELAY_3, GPIO.HIGH)
+        # GPIO.output(PIN_RELAY_4, GPIO.HIGH)
     else:
         GPIO.output(PIN_RELAY_1, GPIO.LOW)
-        GPIO.output(PIN_RELAY_2, GPIO.LOW)
-        GPIO.output(PIN_RELAY_3, GPIO.LOW)
-        GPIO.output(PIN_RELAY_4, GPIO.LOW)
+        # GPIO.output(PIN_RELAY_2, GPIO.LOW)
+        # GPIO.output(PIN_RELAY_3, GPIO.LOW)
+        # GPIO.output(PIN_RELAY_4, GPIO.LOW)
 
 def gpio_cleanup():
     GPIO.cleanup()
