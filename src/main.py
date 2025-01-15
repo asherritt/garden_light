@@ -35,7 +35,7 @@ def _process_step(step):
     print(f"Processing step {step}")
     set_light(step.fill_light)
     set_cyc_light(step.cyc)
-    set_relays(step.lamps_on)
+    set_relays(True)
 
 def _init_phases():
     phases = get_phases()
