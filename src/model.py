@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 class Phase(BaseModel):
     name: str
     start_time: str
-    lamps_on: bool
     total_minutes: int
 
     def add_minutes(self, n):
