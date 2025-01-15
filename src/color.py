@@ -182,6 +182,8 @@ def get_steps(phases):
             for i in range(len(cyc_colors))
         ]
 
+        lamps_on = next((pc.lamps_on for pc in phase_colors if pc.name == phase.name), None)
+
         for m in range(phase.total_minutes):
             # Combine interpolated values for fill_light and cyc
             interpolated_fill_light = [fill_light_interpolated[i][m] for i in range(len(fill_light_interpolated))]
@@ -190,7 +192,7 @@ def get_steps(phases):
             steps.append(
                 Step(
                     time=phase.add_minutes(m),
-                    lamps_on=phase.lamps_on,
+                    lamps_on=lamps_on,
                     phase_name=phase.name,
                     fill_light=interpolated_fill_light,
                     cyc=interpolated_cyc,
