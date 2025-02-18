@@ -3,7 +3,8 @@ import schedule
 from datetime import datetime, timedelta
 import globals
 
-WLED_IP = "192.168.1.169"
+WLED_IP = "192.168.1.168"
+BRIGHTNESS = 80
 
 def _send_wled_set_request(cyc_rgb_colors):
     """Send API request to WLED to set a preset."""
@@ -12,7 +13,7 @@ def _send_wled_set_request(cyc_rgb_colors):
     payload = {
         "on": True,
         "tt": 55000,
-        "bri": 255,
+        "bri": BRIGHTNESS,
         "ledmap": 0,
         "mainseg": 0,
         "seg": [
