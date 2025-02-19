@@ -6,7 +6,7 @@ phase_colors = [
     PhaseColor(
         name='midnight',
         lamps_on=True,
-        fill_light = [(255, 0, 0, 0), (255, 0, 0, 0), (255, 0, 0, 0)],
+        fill_light = [(180, 0, 255, 0), (180, 0, 255, 0), (180, 0, 255, 0)],
         cyc = [
             (36, 39, 45),
             (26, 48, 120),
@@ -102,7 +102,7 @@ phase_colors = [
     PhaseColor(
         name='last_light',
         lamps_on=True,
-        fill_light = [(255, 0, 0, 0), (255, 0, 0, 0), (255, 0, 0, 0)],
+        fill_light = [(180, 0, 255, 0), (180, 0, 255, 0), (180, 0, 255, 0)],
         cyc = [
             (16, 29, 45),
             (26, 48, 120),
@@ -114,7 +114,7 @@ phase_colors = [
     PhaseColor(
         name='eod',
         lamps_on=True,
-        fill_light = [(255, 0, 0, 0), (255, 0, 0, 0), (255, 0, 0, 0)],
+        fill_light = [(180, 0, 255, 0), (180, 0, 255, 0), (180, 0, 255, 0)],
         cyc = [
             (36, 39, 45),
             (26, 48, 120),
