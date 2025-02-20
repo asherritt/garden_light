@@ -10,7 +10,7 @@ from wled_api import set_cyc_light
 from color import get_steps
 import atexit
 
-STEP_TIME = 10
+STEP_TIME = 2
 
 def _on_exit():
     """Perform all necessary cleanup tasks."""

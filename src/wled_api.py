@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 import globals
 
 WLED_IP = "192.168.1.168"
-BRIGHTNESS = 100
-TRANSITION_TIME = 550
+BRIGHTNESS = 80
+TRANSITION_TIME = 10
 
 def _send_wled_set_request(cyc_rgb_colors):
     """Send API request to WLED to set a preset."""
