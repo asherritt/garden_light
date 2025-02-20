@@ -5,6 +5,7 @@ import globals
 
 WLED_IP = "192.168.1.168"
 BRIGHTNESS = 100
+TRANSITION_TIME = 550
 
 def _send_wled_set_request(cyc_rgb_colors):
     """Send API request to WLED to set a preset."""
@@ -12,7 +13,7 @@ def _send_wled_set_request(cyc_rgb_colors):
 
     payload = {
         "on": True,
-        "tt": 55000,
+        "tt": TRANSITION_TIME,
         "bri": BRIGHTNESS,
         "ledmap": 0,
         "mainseg": 0,
