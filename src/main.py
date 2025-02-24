@@ -23,15 +23,14 @@ def _on_exit():
 def _get_steps_after_now(steps: List[Step]) -> List[Step]:
     """Slice the list of steps that occur after the current time."""
     # Get the current time as a time object
-    # current_time = datetime.now().time()
-    return steps
+    current_time = datetime.now().time()
     # Filter steps that occur after the current time
-    # steps_after_now = [
-    #     step for step in steps
-    #     if datetime.strptime(step.time, "%H:%M:%S").time() >= current_time
-    # ]
+    steps_after_now = [
+        step for step in steps
+        if datetime.strptime(step.time, "%H:%M:%S").time() >= current_time
+    ]
     
-    # return steps_after_now
+    return steps_after_now
 
 def _process_step(step):
     print(f"Processing step {step}")
