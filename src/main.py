@@ -10,7 +10,7 @@ from wled_api import set_cyc_light
 from color import get_steps
 import atexit
 
-STEP_TIME = 60
+DAY_CYCLES = 4 # Number of full day/night cycles in 24 hours
 
 def _on_exit():
     """Perform all necessary cleanup tasks."""
@@ -48,7 +48,7 @@ def _init_phases():
         # Wait for one minute before processing the next step, if there are more steps
         if steps:
             print(f"current_step {current_step}")
-            time.sleep(STEP_TIME) 
+            time.sleep(60/DAY_CYCLES) 
     _init_phases()
 
 
