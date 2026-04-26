@@ -41,19 +41,19 @@ Pydantic models: `Phase` (a named time window with duration), `PhaseColor` (targ
 ## Running
 
 ```bash
-sudo venv_garden_light/bin/python src/main.py
+sudo python3 ~/Desktop/garden_light/src/main.py
 ```
 
 Use `-c` to clear the LED strip on exit:
 
 ```bash
-sudo venv_garden_light/bin/python src/main.py -c
+sudo python3 ~/Desktop/garden_light/src/main.py -c
 ```
 
 ## Testing
 
 ```bash
-sudo venv_garden_light/bin/python src/test/test_relay.py
+sudo python3 ~/Desktop/garden_light/src/test/test_relay.py
 ```
 
 ## Dependencies
